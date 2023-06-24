@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const usersRoute = require('./users');
+const cardsRoute = require('./cards');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
   res.send('ok');
 });
 
-router.use('/users', usersRoute);
+router.use('/cards', cardsRoute);
 
 module.exports = router;
