@@ -54,7 +54,7 @@ router.put('/:id', async (req, res, next) => {
 });
 
 /* DELETE specific card */
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', async (req, res) => {
   const card = await prisma.card.delete({
     where: {
       id: parseInt(req.params.id)

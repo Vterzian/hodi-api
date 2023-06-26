@@ -1,8 +1,19 @@
 version: '3'
 services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://hodi:hodi@db:5432/hodi?schema=public
   db:
     image: postgres:13
-    restart: always
     environment:
       POSTGRES_USER: hodi
       POSTGRES_PASSWORD: hodi
