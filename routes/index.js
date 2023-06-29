@@ -8,6 +8,6 @@ router.get('/', (req, res, next) => {
   res.send('ok');
 });
 
-router.use('/cards', cardsRoute);
+router.use('/', cardsRoute);
 
 module.exports = router;
