@@ -4,9 +4,26 @@ const prisma = new PrismaClient()
 
 const getCardListController = async (req, res, next) => {
     try {
-      const cardList = await prisma.card.findMany();
+      const { page, limit, orderBy, orderDirection } = req.query;
+      const skip = (page - 1) * limit;
 
-      res.json(cardList);
+      const cardList = await prisma.card.findMany({
+        skip,
+        take: limit,
+        orderBy: {
+          [orderBy]: orderDirection,
+        },
+      });
+
+      res.json({
+        page,
+        limit,
+        orderBy: {
+          column: orderBy,
+          direction: orderDirection,
+        },
+        result: cardList,
+      });
     } catch(error) {
       next(error);
     }
