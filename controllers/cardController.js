@@ -84,7 +84,7 @@ const updateCardController = async (req, res, next) => {
 
 const deleteCardController = async (req, res, next) => {
   try {
-    const card = await prisma.card.delete({
+    await prisma.card.delete({
       where: {
         id: parseInt(req.params.id),
       },
