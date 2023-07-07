@@ -15,7 +15,7 @@ const validateMiddleware = (schema) =>
     } catch (error) {
       next({ ...error, status: 400 });
     }
-};
+  };
 
 module.exports = {
   validateMiddleware,

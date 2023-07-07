@@ -1,107 +1,107 @@
 const { PrismaClient } = require('@prisma/client');
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const getCardListController = async (req, res, next) => {
-    try {
-      const { page, limit, orderBy, orderDirection } = req.query;
-      const skip = (page - 1) * limit;
+  try {
+    const { page, limit, orderBy, orderDirection } = req.query;
+    const skip = (page - 1) * limit;
 
-      const cardList = await prisma.card.findMany({
-        skip,
-        take: limit,
-        orderBy: {
-          [orderBy]: orderDirection,
-        },
-      });
+    const cardList = await prisma.card.findMany({
+      skip,
+      take: limit,
+      orderBy: {
+        [orderBy]: orderDirection,
+      },
+    });
 
-      res.json({
-        page,
-        limit,
-        orderBy: {
-          column: orderBy,
-          direction: orderDirection,
-        },
-        result: cardList,
-      });
-    } catch(error) {
-      next(error);
-    }
-}
+    res.json({
+      page,
+      limit,
+      orderBy: {
+        column: orderBy,
+        direction: orderDirection,
+      },
+      result: cardList,
+    });
+  } catch(error) {
+    next(error);
+  }
+};
 
 const getOneCardController = async (req, res, next) => {
-    try {
-      const card = await prisma.card.findUniqueOrThrow({
-        where: {
-          id: parseInt(req.params.id)
-        }
-      });
+  try {
+    const card = await prisma.card.findUniqueOrThrow({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
   
-      res.json(card);
-    } catch(error) {
-      next(error);
-    }
-}
+    res.json(card);
+  } catch(error) {
+    next(error);
+  }
+};
 
 const addCardController = async (req, res, next) => {
-    try {
-        const { name, attack, health } = req.body;
+  try {
+    const { name, attack, health } = req.body;
 
-        const newCard = await prisma.card.create({
-        data: {
-            name,
-            attack,
-            health,
-        },
-        });
+    const newCard = await prisma.card.create({
+      data: {
+        name,
+        attack,
+        health,
+      },
+    });
 
-        res.status(201).json(newCard);
-    } catch(error) {
-        next(error);
-    }
-}
+    res.status(201).json(newCard);
+  } catch(error) {
+    next(error);
+  }
+};
 
 const updateCardController = async (req, res, next) => {
-    try {
-      await prisma.card.findUniqueOrThrow({
-        where: {
-          id: parseInt(req.params.id)
-        }
-      });
+  try {
+    await prisma.card.findUniqueOrThrow({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
     
-      const updatedCard = await prisma.card.update({
-        data: req.body,
-        where: {
-          id: parseInt(req.params.id)
-        }
-      });
+    const updatedCard = await prisma.card.update({
+      data: req.body,
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
   
-      res.json(updatedCard);
-    } catch(error) {
-      next(error);
-    }
-}
+    res.json(updatedCard);
+  } catch(error) {
+    next(error);
+  }
+};
 
 const deleteCardController = async (req, res, next) => {
-    try {
-      const card = await prisma.card.delete({
-        where: {
-          id: parseInt(req.params.id)
-        }
-      });
+  try {
+    const card = await prisma.card.delete({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
   
-      res.status(204).json('ok');
-    } catch(error) {
-      next(error);
-    }
-}
+    res.status(204).json('ok');
+  } catch(error) {
+    next(error);
+  }
+};
 
 module.exports = {
-    getCardListController,
-    getOneCardController,
-    addCardController,
-    updateCardController,
-    deleteCardController,
+  getCardListController,
+  getOneCardController,
+  addCardController,
+  updateCardController,
+  deleteCardController,
 };
 
 // class CardController {
