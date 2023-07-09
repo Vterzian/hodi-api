@@ -1,5 +1,7 @@
 const z = require('zod');
 
+
+// Base Schemas
 const cardSchema = z.object({
     name: z.string().min(1).max(255),
     cost: z.number().min(0),
@@ -12,12 +14,24 @@ const cardParamsSchema = z.object({
     id: z.coerce.number(),
 });
 
-const addCardSchema = z.object({
-    body: cardSchema,
+const cardQuerySchema = z.object({
+    page: z.coerce.number().min(1).max(255).default(1),
+    limit: z.coerce.number().min(1).max(255).default(10),
+    orderBy: z.coerce.string().max(255).default('id'),
+    orderDirection: z.coerce.string().default('desc'), 
+});
+
+// Endpoint Schemas
+const getCardListSchema = z.object({
+    query: cardQuerySchema,
 });
 
 const getOneCardSchema = z.object({
     params: cardParamsSchema,
+});
+
+const addCardSchema = z.object({
+    body: cardSchema,
 });
 
 const updateCardSchema = z.object({
@@ -28,7 +42,9 @@ const updateCardSchema = z.object({
 module.exports = {
     cardSchema,
     cardParamsSchema,
-    addCardSchema,
+    cardQuerySchema,
+    getCardListSchema,
     getOneCardSchema,
+    addCardSchema,
     updateCardSchema,
 };

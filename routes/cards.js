@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOneCardSchema, addCardSchema, updateCardSchema } = require('../schemas/card');
+const { getCardListSchema, getOneCardSchema, addCardSchema, updateCardSchema } = require('../schemas/card');
 const { validateMiddleware } = require('../middleware/validationMiddleware');
 const { 
   getCardListController, 
@@ -11,7 +11,7 @@ const {
 
 const router = express.Router();
 
-router.get('/cards', getCardListController);
+router.get('/cards', validateMiddleware(getCardListSchema), getCardListController);
 router.get('/cards/:id', validateMiddleware(getOneCardSchema), getOneCardController);
 router.post('/cards', validateMiddleware(addCardSchema), addCardController);
 router.put('/cards/:id', validateMiddleware(updateCardSchema), updateCardController);
