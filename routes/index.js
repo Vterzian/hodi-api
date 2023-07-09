@@ -4,8 +4,8 @@ const router = express.Router();
 const cardsRoute = require('./cards');
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
-  res.send('ok');
+router.get('/', (req, res) => {
+  res.json('ok');
 });
 
 router.use('/', cardsRoute);

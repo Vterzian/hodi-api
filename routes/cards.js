@@ -6,7 +6,7 @@ const {
   getOneCardController, 
   addCardController, 
   updateCardController, 
-  deleteCardController 
+  deleteCardController, 
 } = require('../controllers/cardController');
 
 const router = express.Router();

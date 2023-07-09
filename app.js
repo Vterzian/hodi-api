@@ -18,10 +18,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 // error handler
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  // return the error
-  console.log({...err});
-  const error = err || "An error occurred";
+  const error = err || 'An error occurred';
   let statusCode = err.status || 500;
 
   if (err instanceof Prisma.NotFoundError) {
