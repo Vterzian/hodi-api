@@ -1,6 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const { prisma } = require('../prisma/client');
 
 const getCardListController = async (req, res, next) => {
   try {
@@ -90,7 +88,7 @@ const deleteCardController = async (req, res, next) => {
       },
     });
   
-    res.status(204).json('ok');
+    res.status(204).json('');
   } catch(error) {
     next(error);
   }
