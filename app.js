@@ -24,7 +24,7 @@ app.use((err, req, res, next) => {
   const error = err || "An error occurred";
   let statusCode = err.status || 500;
 
-  if (err instanceof Prisma.NotFoundError) {
+  if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2025") {
     statusCode = 404;
   }
 
