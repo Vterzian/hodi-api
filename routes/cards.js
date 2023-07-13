@@ -1,29 +1,13 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
+const { getOneCardSchema, addCardSchema, updateCardSchema } = require('../schemas/card');
+const { validateSchema } = require('../middleware/validationMiddleware');
 
 const router = express.Router();
 const prisma = new PrismaClient()
 
-
-// TODO find a better way to check if card exist before updating or deleting
-router.all('/:id', async (req, res, next) => {
-  try {
-    if (req.method !== "GET" || req?.params?.id) {
-      await prisma.card.findUniqueOrThrow({
-        where: {
-          id: parseInt(req.params.id)
-        }
-      });
-    }
-
-    next();
-  } catch(error) {
-    next(error);
-  }
-});
-
 /* GET cards listing. */
-router.get('/', async (req, res, next) => {
+router.get('/cards', async (req, res, next) => {
   try {
     const cardList = await prisma.card.findMany();
 
@@ -34,7 +18,7 @@ router.get('/', async (req, res, next) => {
 });
 
 /* GET specific card */
-router.get('/:id', async (req, res, next) => {
+router.get('/cards/:id', validateSchema(getOneCardSchema), async (req, res, next) => {
   try {
     const card = await prisma.card.findUniqueOrThrow({
       where: {
@@ -49,7 +33,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 /* ADD new card */
-router.post('/', async (req, res, next) => {
+router.post('/cards', validateSchema(addCardSchema), async (req, res, next) => {
   try {
     const { name, attack, health } = req.body;
 
@@ -68,15 +52,16 @@ router.post('/', async (req, res, next) => {
 });
 
 /* UPDATE a specific card */
-router.put('/:id', async (req, res, next) => {
+router.put('/cards/:id', validateSchema(updateCardSchema), async (req, res, next) => {
   try {
-    const { name, attack, health } = req.body;
+    await prisma.card.findUniqueOrThrow({
+      where: {
+        id: parseInt(req.params.id)
+      }
+    });
+  
     const updatedCard = await prisma.card.update({
-      data: {
-        name,
-        attack,
-        health,
-      },
+      data: req.body,
       where: {
         id: parseInt(req.params.id)
       }
@@ -89,7 +74,7 @@ router.put('/:id', async (req, res, next) => {
 });
 
 /* DELETE specific card */
-router.delete('/:id', async (req, res, next) => {
+router.delete('/cards/:id', validateSchema(getOneCardSchema), async (req, res, next) => {
   try {
     const card = await prisma.card.delete({
       where: {
